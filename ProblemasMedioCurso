@@ -1,0 +1,43 @@
+%Problema 1: Atractor de Lorenz
+
+%Examen.m
+function dxdt = Examen(t,x)
+% x(1) = x, x(2) = y, x(3) = z,
+A = 10;
+B = 28;
+C = 8/3;
+dxdt = [A*(x(2)-x(1)); (x(1)*(B-x(3)))-x(2); (x(1)*x(2))-(C*x(3))];
+end
+
+%solucionexamen.m
+function [t,x] = solucionexamen()
+    tspan = [0; 100];
+    y0 = [0; -1; -1];
+    [t,x] = ode45(@Examen, tspan, y0);
+    plot3(x(:,1),x(:,2),x(:,3))
+end
+
+%Problema 2: Péndulo invertido
+%Examen2.m
+function dxdt = Examen2(t,x)
+% x(1) = y, x(2) = teta, x(3) = y', x(4) = teta'
+syms x3p x4p 
+M = 1;
+l = 5;
+m = 1;
+J = 0.5;
+g = 9.8;
+u = 1;
+eqn1 = ((M+m)*x3p)-(m*l*cos(x(2))*x4p)+(m*l*sin(x(2))*(x(4)^2));
+eqn2 = (-m*g*l*cos(x(2))*x3p)+((J+(m*l^2))*x4p)-(m*g*l*sin(x(2)));
+[sol1 sol2] = solve([eqn1==u,eqn2==0], [x3p,x4p])
+%end
+
+%solucionexamen2
+function [t,x] = call_Examen2()
+    tspan = [0; 100];
+    y0 = [0; 0];
+    [t,x] = ode45(@Examen2, tspan, y0);
+end
+
+
